@@ -1,0 +1,256 @@
+1)
+i)
+use dbda
+   ... ;
+cqlsh:dbda> create table customers(
+        ... custoid int primary key,
+        ... name text,
+        ... mobile set<int>,
+        ... email tuple<text,text>,
+        ... hoobies list<text>);
+ii)
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(13,'Shreyash',{513},('shreyash123@gmail.com','dande@yahoo.in'),['Swimming','reading','sketching','riding']);
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(14,'Ajinkya',{6521,343,6742},('ajinkya120@gmail.com','deshmukh@redit.in'),['Swimming','sketching']);
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(15,'Atharva',{921,3413},('Atharva@gmail.com','AB3425@yahoo.in'),['Swimming','reading','sketching','trekking','playing']);
+cqlsh:dbda> Apply batch;
+SyntaxException: line 1:0 no viable alternative at input 'Apply' ([Apply]...)
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(12,'Shivam',{9521,513,6598743251},('shivammuluk@gmail.com','muluk@redit.in'),['Swimming','reading','sketching','trekking']);
+InvalidRequest: Error from server: code=2200 [Invalid query] message="Unable to make int from '6598743251'"
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(13,'Shreyash',{513},('shreyash123@gmail.com','dande@yahoo.in'),['Swimming','reading','sketching','riding']);
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(14,'Ajinkya',{6521,343,6742},('ajinkya120@gmail.com','deshmukh@redit.in'),['Swimming','sketching']);
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(15,'Atharva',{921,3413},('Atharva@gmail.com','AB3425@yahoo.in'),['Swimming','reading','sketching','trekking','playing']);
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------
+      13 |   ('shreyash123@gmail.com', 'dande@yahoo.in') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |   Aditya
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya
+
+(4 rows)
+cqlsh:dbda> insert into customers(custoid,name,mobile,email,hoobies)
+        ... values(12,'Shivam',{9521,513,61},('shivammuluk@gmail.com','muluk@redit.in'),['Swimming','reading','sketching','trekking']);
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------
+      13 |   ('shreyash123@gmail.com', 'dande@yahoo.in') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |   Aditya
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') |            ['Swimming', 'reading', 'sketching', 'trekking'] |   {61, 513, 9521} |   Shivam
+
+
+iii)
+ update customers
+        ... set hoobies=hoobies+['design','drawing']
+        ... where custoid=12;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                               | mobile            | name
+---------+-----------------------------------------------+-----------------------------------------------------------------------+-------------------+----------
+      13 |   ('shreyash123@gmail.com', 'dande@yahoo.in') |                        ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                                  ['Swimming', 'reading', 'sketching'] |         {34, 957} |   Aditya
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') |           ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                             ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'design', 'drawing'] |   {61, 513, 9521} |   Shivam
+
+iv)
+ update customers
+        ... set hoobies=hoobies-['design']
+        ... where custoid=12;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------
+      13 |   ('shreyash123@gmail.com', 'dande@yahoo.in') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |   Aditya
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam
+v)
+(5 rows)
+cqlsh:dbda> update customers
+        ... set name='More'
+        ... where custoid=11;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------
+      13 |   ('shreyash123@gmail.com', 'dande@yahoo.in') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam
+
+vi)modify emails of customer 13
+ update customers
+        ... set email=('shrey@gmail.in','dande@redit.gov')
+        ... where custoid=13;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------
+      13 |         ('shrey@gmail.in', 'dande@redit.gov') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam
+vii)
+alter table customers add purchasevech map<text,int>;
+
+update customers
+        ... set purchasevech={'audi':4,'hundai':7}
+        ... where custoid=13;
+cqlsh:dbda> update customers
+        ... set purchasevech={'audi':4,'hundai':7,'innova':6}
+        ... where custoid=14;
+cqlsh:dbda> update customers
+        ... set purchasevech={'audi':4,'innova':6,'BMW':3}
+        ... where custoid=15;
+
+select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name     | purchasevech
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------+-----------------------------------------------------------
+      13 |         ('shrey@gmail.in', 'dande@redit.gov') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash |                                  {'audi': 4, 'hundai': 7}
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More |                                  {'audi': 2, 'innova': 2}
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva |                        {'BMW': 3, 'audi': 4, 'innova': 6}
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya |                     {'audi': 4, 'hundai': 7, 'innova': 6}
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam | {'audi': 2, 'innova': 5, 'konisberg': 9, 'lamborgini': 5}
+
+ans-
+update customers
+        ... set purchasevech=purchasevech+{'TATA':6}
+        ... where custoid=11;
+
+delete purchasevech['audi'] from customers where custoid=13;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name     | purchasevech
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------+-----------------------------------------------------------
+      13 |         ('shrey@gmail.in', 'dande@redit.gov') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash |                     {'BMW': 3, 'ferreri': 6, 'innova': 6}
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More |                       {'TATA': 6, 'audi': 2, 'innova': 2}
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva |                        {'BMW': 3, 'audi': 4, 'innova': 6}
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                   ['Swimming', 'sketching'] | {343, 6521, 6742} |  Ajinkya |                     {'audi': 4, 'hundai': 7, 'innova': 6}
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam | {'audi': 2, 'innova': 5, 'konisberg': 9, 'lamborgini': 5}
+
+viii)add and delete one of the hobbies for customer 14
+update customers
+        ... set hoobies=hoobies+['reading']
+        ... where custoid=14;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name     | purchasevech
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------+-----------------------------------------------------------
+      13 |         ('shrey@gmail.in', 'dande@redit.gov') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash |                     {'BMW': 3, 'ferreri': 6, 'innova': 6}
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More |                       {'TATA': 6, 'audi': 2, 'innova': 2}
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva |                        {'BMW': 3, 'audi': 4, 'innova': 6}
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                        ['Swimming', 'sketching', 'reading'] | {343, 6521, 6742} |  Ajinkya |                     {'audi': 4, 'hundai': 7, 'innova': 6}
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam | {'audi': 2, 'innova': 5, 'konisberg': 9, 'lamborgini': 5}
+
+(5 rows)
+cqlsh:dbda> update customers
+        ... set hoobies=hoobies-['Swimming']
+        ... where custoid=14;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name     | purchasevech
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------+-----------------------------------------------------------
+      13 |         ('shrey@gmail.in', 'dande@redit.gov') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash |                     {'BMW': 3, 'ferreri': 6, 'innova': 6}
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More |                       {'TATA': 6, 'audi': 2, 'innova': 2}
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva |                        {'BMW': 3, 'audi': 4, 'innova': 6}
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                    ['sketching', 'reading'] | {343, 6521, 6742} |  Ajinkya |                     {'audi': 4, 'hundai': 7, 'innova': 6}
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam | {'audi': 2, 'innova': 5, 'konisberg': 9, 'lamborgini': 5}
+
+
+ix)change the quantity of vehicle BMW from customer id 15
+ update customers
+        ... set purchasevech['BMW']=9
+        ... where custoid=15;
+cqlsh:dbda> select * from customers;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name     | purchasevech
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+----------+-----------------------------------------------------------
+      13 |         ('shrey@gmail.in', 'dande@redit.gov') |              ['Swimming', 'reading', 'sketching', 'riding'] |             {513} | Shreyash |                     {'BMW': 3, 'ferreri': 6, 'innova': 6}
+      11 |   ('moreaditya@gmail.com', 'aditya@yahoo.in') |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |     More |                       {'TATA': 6, 'audi': 2, 'innova': 2}
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} |  Atharva |                        {'BMW': 9, 'audi': 4, 'innova': 6}
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                    ['sketching', 'reading'] | {343, 6521, 6742} |  Ajinkya |                     {'audi': 4, 'hundai': 7, 'innova': 6}
+      12 |   ('shivammuluk@gmail.com', 'muluk@redit.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |   Shivam | {'audi': 2, 'innova': 5, 'konisberg': 9, 'lamborgini': 5}
+
+
+Q2create a batch to add 2 records in customer table, delete record for customer 13 
+and delete only email from customer 11
+and update emails for customer 12
+
+cqlsh:dbda> begin batch
+        ... insert into customers(custoid,name,mobile,email,hoobies,purchasevech)
+        ... values(16,'Soham',{516},('soham@gmail.com','s332@redit.in'),['drawing','sketching','trekking'],{'innova':5,'BMW':6});
+        ... insert into customers(custoid,name,mobile,email,hoobies,purchasevech)
+        ... values(17,'Vikram',{921,33,456},('vikram@gmail.com','VBd5@yahoo.in'),['Swimming','reading','trekking','playing'],{'Jaguar':5,'audi':6});
+        ... delete from customers where custoid=13;
+        ... update customers
+        ... set email=('muluk234@redit.in','shiva1234@google.com')
+        ... where custoid=12;
+        ... delete email from customers where custoid=11;
+        ... apply batch;
+
+select * from customers
+        ... ;
+
+ custoid | email                                         | hoobies                                                     | mobile            | name    | purchasevech
+---------+-----------------------------------------------+-------------------------------------------------------------+-------------------+---------+-----------------------------------------------------------
+      16 |          ('soham@gmail.com', 's332@redit.in') |                        ['drawing', 'sketching', 'trekking'] |             {516} |   Soham |                                   {'BMW': 6, 'innova': 5}
+      11 |                                          null |                        ['Swimming', 'reading', 'sketching'] |         {34, 957} |    More |                       {'TATA': 6, 'audi': 2, 'innova': 2}
+      15 |      ('Atharva@gmail.com', 'AB3425@yahoo.in') | ['Swimming', 'reading', 'sketching', 'trekking', 'playing'] |       {921, 3413} | Atharva |                        {'BMW': 9, 'audi': 4, 'innova': 6}
+      14 | ('ajinkya120@gmail.com', 'deshmukh@redit.in') |                                    ['sketching', 'reading'] | {343, 6521, 6742} | Ajinkya |                     {'audi': 4, 'hundai': 7, 'innova': 6}
+      17 |         ('vikram@gmail.com', 'VBd5@yahoo.in') |              ['Swimming', 'reading', 'trekking', 'playing'] |    {33, 456, 921} |  Vikram |                                  {'Jaguar': 5, 'audi': 6}
+      12 | ('muluk234@redit.in', 'shiva1234@google.com') | ['Swimming', 'reading', 'sketching', 'trekking', 'drawing'] |   {61, 513, 9521} |  Shivam | {'audi': 2, 'innova': 5, 'konisberg': 9, 'lamborgini': 5}
+
+3). create type department to store deptno, dname
+create type department(deptno int, dname text);
+
+a)change the type department to add dloc in it.
+create table emp to store eid, ename, sal, projects List<text>, dept department 
+add 5 records in the table
+cqlsh:dbda> alter type department add dloc text;
+
+create table emp1(
+        ... store_id int primary key
+        ... ,ename text
+        ... ,sal int,
+        ... projects List<text>,
+        ... dept department);
+cqlsh:dbda>
+
+ begin batch
+        ... insert into emp1(store_id,ename,sal,projects,dept) values(1,'shivam',5000,['P1','P2','P3'],{deptno:10,dname:'sales',dloc:'Pune'});
+        ... insert into emp1(store_id,ename,sal,projects,dept) values(2,'aditya',5600,['PP2','SP3'],{deptno:20,dname:'Manager',dloc:'SambhajiNagar'});
+        ... insert into emp1(store_id,ename,sal,projects,dept) values(3,'soham',8000,['P5'],{deptno:10,dname:'sales',dloc:'Nagpur'});
+        ... insert into emp1(store_id,ename,sal,projects,dept) values(4,'atharva',6500,['A1','A3','A5','A11'],{deptno:30,dname:'Analyst',dloc:'Satara'});
+        ... insert into emp1(store_id,ename,sal,projects,dept) values(5,'ajinkya',6000,['P1','P2'],{deptno:10,dname:'sales',dloc:'Beed'});
+        ... apply batch;
+
+ select * from emp1;
+
+ store_id | dept                                                  | ename   | projects                  | sal
+----------+-------------------------------------------------------+---------+---------------------------+------
+        5 |            {deptno: 10, dname: 'sales', dloc: 'Beed'} | ajinkya |              ['P1', 'P2'] | 6000
+        1 |            {deptno: 10, dname: 'sales', dloc: 'Pune'} |  shivam |        ['P1', 'P2', 'P3'] | 5000
+        2 | {deptno: 20, dname: 'Manager', dloc: 'SambhajiNagar'} |  aditya |            ['PP2', 'SP3'] | 5600
+        4 |        {deptno: 30, dname: 'Analyst', dloc: 'Satara'} | atharva | ['A1', 'A3', 'A5', 'A11'] | 6500
+        3 |          {deptno: 10, dname: 'sales', dloc: 'Nagpur'} |   soham |                    ['P5'] | 8000
+
+b.
+create index on ename column
+cqlsh:dbda> create index enameidx on emp1(ename);
+cqlsh:dbda>
+
